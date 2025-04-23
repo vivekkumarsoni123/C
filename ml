@@ -52,44 +52,22 @@ print("\nP(HeartDisease | cp=2)")
 print(infer.query(['heartdisease'], evidence={'cp': 2}))
 
 Experiment-11:
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.mixture import GaussianMixture
-from sklearn.metrics import accuracy_score, confusion_matrix
-# Load dataset
-names = ['Sepal_Length','Sepal_Width','Petal_Length','Petal_Width', 'Class']
-data = pd.read_csv("8-dataset.csv", names=names)
-# Input features and labels
-X = data.iloc[:, :-1]
-labels = {'Iris-setosa': 0, 'Iris-versicolor': 1, 'Iris-virginica': 2}
-y = [labels[i] for i in data['Class']]
-# Color map
-colors = np.array(['red', 'lime', 'black'])
-# Plot Real Labels
-plt.figure(figsize=(14, 5))
-plt.subplot(1, 3, 1)
-plt.title("Actual")
-plt.scatter(X.Petal_Length, X.Petal_Width, c=colors[y])
-# KMeans
+from sklearn import datasets, metrics
+import numpy as np
+import matplotlib.pyplot as plt
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
 kmeans = KMeans(n_clusters=3, random_state=0)
 kmeans_labels = kmeans.fit_predict(X)
-plt.subplot(1, 3, 2)
-plt.title("KMeans")
-plt.scatter(X.Petal_Length, X.Petal_Width, c=colors[kmeans_labels])
-print("KMeans Accuracy:", accuracy_score(y, kmeans_labels))
-print("KMeans Confusion:\n", confusion_matrix(y, kmeans_labels))
-# Gaussian Mixture
+print("The accuracy score of K-Mean:", metrics.accuracy_score(y, kmeans_labels))
+print("The Confusion matrix of K-Mean:\n", metrics.confusion_matrix(y, kmeans_labels))
 gmm = GaussianMixture(n_components=3, random_state=0)
-gmm_labels = gmm.fit_predict(X)
-plt.subplot(1, 3, 3)
-plt.title("GMM")
-plt.scatter(X.Petal_Length, X.Petal_Width, c=colors[gmm_labels])
-plt.tight_layout()
-plt.show()
-print("GMM Accuracy:", accuracy_score(y, gmm_labels))
-print("GMM Confusion:\n", confusion_matrix(y, gmm_labels))
+gmm_labels = gmm.fit(X).predict(X)
+print("The accuracy score of EM:", metrics.accuracy_score(y, gmm_labels))
+
 
 Experiment: 9
 import numpy as np
@@ -112,7 +90,6 @@ plt.show()
 
 Experiment: 7
 import numpy as np
-
 # Input and output
 X = np.array([[2, 9], [1, 5], [3, 6]], dtype=float)
 y = np.array([[92], [86], [89]], dtype=float)
