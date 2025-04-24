@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Online Reviews</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #f8f9fa;
+      color: #333;
+      padding: 20px;
+    }
+
+    header {
+      background: linear-gradient(to right, #182848, #4b6cb7);
+      color: white;
+      text-align: center;
+      padding: 30px 0;
+      border-radius: 12px;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .review-form {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+    }
+
+    .review-form h2 {
+      margin-bottom: 15px;
+    }
+
+    .review-form input,
+    .review-form textarea,
+    .review-form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .review-form button {
+      background-color: #4b6cb7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .review-form button:hover {
+      background-color: #354fa0;
+    }
+
+    .reviews-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .review-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .review-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .review-card h3 {
+      margin-bottom: 10px;
+    }
+
+    .review-card .rating {
+      color: #ffc107;
+      margin-bottom: 10px;
+    }
+
+    .review-card p {
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🌟 Online Reviews</h1>
+    <p>See what others are saying and leave your own feedback!</p>
+  </header>
+
+  <section class="review-form">
+    <h2>Leave a Review</h2>
+    <form id="reviewForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <select id="rating" required>
+        <option value="">Rating</option>
+        <option>⭐</option>
+        <option>⭐⭐</option>
+        <option>⭐⭐⭐</option>
+        <option>⭐⭐⭐⭐</option>
+        <option>⭐⭐⭐⭐⭐</option>
+      </select>
+      <textarea rows="4" id="message" placeholder="Write your review..." required></textarea>
+      <button type="submit">Submit Review</button>
+    </form>
+  </section>
+
+  <section class="reviews-container" id="reviewsContainer">
+    <div class="review-card">
+      <h3>Alice</h3>
+      <div class="rating">⭐⭐⭐⭐⭐</div>
+      <p>Absolutely love this service! Easy to use and great support.</p>
+    </div>
+    <div class="review-card">
+      <h3>Bob</h3>
+      <div class="rating">⭐⭐⭐</div>
+      <p>Good overall, but there’s room for improvement in the UI.</p>
+    </div>
+  </section>
+
+  <script>
+    const reviewForm = document.getElementById("reviewForm");
+    const reviewsContainer = document.getElementById("reviewsContainer");
+
+    reviewForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const rating = document.getElementById("rating").value;
+      const message = document.getElementById("message").value.trim();
+
+      if (name && rating && message) {
+        const reviewCard = document.createElement("div");
+        reviewCard.classList.add("review-card");
+
+        reviewCard.innerHTML = `
+          <h3>${name}</h3>
+          <div class="rating">${rating}</div>
+          <p>${message}</p>
+        `;
+
+        reviewsContainer.prepend(reviewCard); // add new review at the top
+        reviewForm.reset(); // clear form
+      }
+    });
+  </script>
+
+</body>
+</html>
