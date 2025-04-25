@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <string.h>
+
+char stack[100], input[100];
+int top = -1, ip = 0;
+
+void printState() {
+    for (int i = 0; i <= top; i++)
+        printf("%c", stack[i]);
+    printf("\t\t");
+    for (int i = ip; i < strlen(input); i++)
+        printf("%c", input[i]);
+    printf("\n");
+}
+
+void reduce() {
+    while (1) {
+        // E+E → E
+        if (top >= 2 && stack[top] == 'E' && stack[top-1] == '+' && stack[top-2] == 'E') {
+            top -= 2;
+            stack[top] = 'E';
+            printState();
+        }
+        // E*E → E
+        else if (top >= 2 && stack[top] == 'E' && stack[top-1] == '*' && stack[top-2] == 'E') {
+            top -= 2;
+            stack[top] = 'E';
+            printState();
+        }
+        // i → E
+        else if (top >= 0 && stack[top] == 'i') {
+            stack[top] = 'E';
+            printState();
+        }
+        else break;
+    }
+}
+
+int main() {
+    printf("Enter the input: ");
+    scanf("%s", input);
+    strcat(input, "$");
+
+    printf("\nstack\t\tinput\n");
+
+    while (input[ip] != '\0') {
+        stack[++top] = input[ip++];
+        printState();
+        reduce();
+    }
+
+    if (top == 1 && stack[0] == 'E' && stack[1] == '$')
+        printf("\naccept the input\n");
+    else
+        printf("\nreject the input\n");
+
+    return 0;
+}
