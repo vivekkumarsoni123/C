@@ -1,3 +1,5 @@
+Q. Write a C Program to design a LALR bottom up parser for the given language
+
 #include <stdio.h>
 #include <string.h>
 
@@ -56,3 +58,84 @@ int main() {
 
     return 0;
 }
+
+
+
+
+
+
+
+Q. Write a C Program to construct a recursive descent parser for an expression
+
+#include <stdio.h>
+#include <string.h>
+
+char input[100];
+int ip = 0;
+
+void E(), Eprime(), T(), Tprime(), F();
+
+void match(char expected) {
+    if (input[ip] == expected) ip++;
+    else {
+        printf("Error at %c\n", input[ip]);
+        exit(1);
+    }
+}
+
+void E() {
+    T();
+    Eprime();
+}
+
+void Eprime() {
+    if (input[ip] == '+') {
+        match('+');
+        T();
+        Eprime();
+    }
+    // else ε (do nothing)
+}
+
+void T() {
+    F();
+    Tprime();
+}
+
+void Tprime() {
+    if (input[ip] == '*') {
+        match('*');
+        F();
+        Tprime();
+    }
+    // else ε
+}
+
+void F() {
+    if (input[ip] == '(') {
+        match('(');
+        E();
+        match(')');
+    } else if (input[ip] == 'i') {
+        match('i');
+    } else {
+        printf("Error at %c\n", input[ip]);
+        exit(1);
+    }
+}
+
+int main() {
+    printf("Enter the input: ");
+    scanf("%s", input);
+    strcat(input, "$");
+
+    E();
+
+    if (input[ip] == '$')
+        printf("Parsing successful.\n");
+    else
+        printf("Parsing failed.\n");
+
+    return 0;
+}
+
